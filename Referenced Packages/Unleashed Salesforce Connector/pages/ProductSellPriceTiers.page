@@ -1,0 +1,16 @@
+<apex:page showHeader="false" sidebar="false" standardController="Product2" 
+extensions="unleashed.ProductSellPriceTiers" action="{!fetchData}">
+
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!pricetiers}" var="price">
+            <apex:column >
+                <apex:facet name="header">Tier Name </apex:facet>
+                <apex:outputText value="{!price.Name}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Sell Price Tier</apex:facet>
+                <apex:outputText value="{!price.Value}"/>
+            </apex:column>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

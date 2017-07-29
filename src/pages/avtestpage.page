@@ -1,0 +1,14 @@
+<apex:page controller="avtest">
+    <apex:form >
+        <apex:pageBlock id="docListBlock" rendered="{!if(msg != NULL, true, false)}" >
+        {!msg}<br /><br />
+        {!fmsg}
+        </apex:pageBlock>
+        Addr: <apex:inputText id="addr_id" value="{!addr}"/> <br />
+        Ct: <apex:inputText id="addr_id1" value="{!ct}"/> <br />
+        St: <apex:inputText id="addr_id2" value="{!st}"/> <br />
+        zp: <apex:inputText id="addr_id3" value="{!zp}"/> <br />
+        coun: <apex:inputText id="addr_id4" value="{!coun}"/> <br />
+        <apex:commandButton value="Submit" action="{!funcnew}"/>
+    </apex:form>
+</apex:page>

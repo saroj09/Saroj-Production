@@ -1,0 +1,35 @@
+<apex:page docType="HTML-5.0"   showHeader="false" standardStylesheets="false" id="SiteTemplate">
+<apex:variable var="community" value="customer-community"  />
+    <!--[if lte IE 7]> <html class="no-js oldbrowser" lang="en"> <![endif]-->   
+    <!--[if gt IE 7]><!-->  <html class="no-js"> <!--<![endif]-->
+    <head>
+    <c:template_head />
+    </head>
+    <body class="{!community}">
+
+	  <p class="noscript" style="display:none;"><strong>Warning:</strong> You do not have Javascript enabled. Please enable it for a better browsing experience.</p> 
+       
+        <div class="row-offcanvas row-offcanvas-left">
+            <apex:outputText > 
+            <!-- rendered="{!(NOT(ISPICKVAL($User.UserType,'Guest')) && NOT(ISPICKVAL($User.UserType,'Standard')))}" -->
+            <div class="hero-area">
+           <c:template_region_hero />
+          
+          	 <c:template_branding />
+             
+             
+             
+            </div>
+             </apex:outputText>
+            <div id="header-zone"></div>
+            <div id="content-zone">
+                <div id="content-zone-inner" class="container">     
+                    <apex:insert name="body"/>
+                </div>
+            </div>
+            <c:template_footer />          
+        </div>  <!--  end offcanvas wrapper -->       
+        <c:template_region_body_vs3 />       
+    </body> 
+</html>  
+</apex:page>

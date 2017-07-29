@@ -1,0 +1,8 @@
+<apex:page standardController="Project__c" recordSetVar="projects" >
+{!pagenumber}
+  <apex:repeat value="{!projects}" var="p" >
+  <apex:form >
+  {!p.Project_Name__c}<br />
+  </apex:form>
+  </apex:repeat>
+</apex:page>

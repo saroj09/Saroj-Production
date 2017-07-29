@@ -1,0 +1,38 @@
+<apex:page showHeader="false" sidebar="false" standardController="Product2"
+            extensions="unleashed.ProductStockOnHandController" action="{!fetchData}">
+
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!stockLevels}" var="stock">
+            <apex:column >
+                <apex:facet name="header">Warehouse</apex:facet>
+                <apex:outputText value="{!stock.unleashed__Warehouse__c}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Warehouse Code</apex:facet>
+                <apex:outputText value="{!stock.unleashed__Warehouse_Code__c}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Stock Available</apex:facet>
+                <apex:outputText value="{0,number,0.00}">
+                    <apex:param value="{!stock.unleashed__Available_Qty__c}"/>
+                </apex:outputText>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Stock Allocated</apex:facet>
+                <apex:outputText value="{0,number,0.00}">
+                    <apex:param value="{!stock.unleashed__Allocated_Qty__c}"/>
+                </apex:outputText>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Stock On Hand</apex:facet>
+                <apex:outputText value="{0,number,0.00}">
+                    <apex:param value="{!stock.unleashed__Qty_On_Hand__c}"/>
+                </apex:outputText>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Days Since Last Sales</apex:facet>
+                <apex:outputText value="{!stock.unleashed__Days_Since_Last_Sale__c}"/>
+            </apex:column>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

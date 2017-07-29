@@ -1,0 +1,39 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.Breadcrumb" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+
+	<script type="text/javascript" language="javascript">			
+			$(document).ready(function(){
+				ce.content_editor('registerSaveFunction', function() {
+					var attributes = {};
+					attributes['cli'] = []; 
+					attributes['cli'].push({"name":"Divider", "value":$('#Divider').val(), "type":"Text"});
+					return attributes;  
+				}); 				 			
+	 		}); 
+	</script>
+		
+	<style type="text/css">
+		.edit-menu{
+			margin-top: 20px;
+		}
+	</style>
+
+
+	<div style="width: 400px; padding-right: 10px; margin-right: 10px; float: left;">
+		<c:MenuEditor disabled="{!disableAll}" content="{!content}" />
+	</div>
+		
+	<div>
+		<h1>Menu Settings</h1>
+		<form>			
+			<table>
+				<tr>
+					<td style="font-size: 12px; font-family: arial;">Hierarchy separator</td>
+					<td>
+						<input type="text" size="6" value="{!Divider}" id="Divider"  name="Divider" />				
+					</td>
+					<td></td>					
+				</tr>
+			</table>		
+		</form>
+	</div>
+</apex:page>

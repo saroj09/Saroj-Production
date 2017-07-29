@@ -1,0 +1,74 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.SmallBlockWithImage"  showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+	 
+		  <script type="text/javascript" language="javascript">
+		 	$(document).ready(function(){
+				ce.content_editor('registerSaveFunction', function(){
+					var attributes = new Array();
+					attributes.push({"name":"ImageId", "value":$('#ImageIdInput').val(), "type":"Text"});
+					attributes.push({"name":"ContentSummary", "value":CKEDITOR.instances.ContentSummary.getData(), "type":"Text"});
+					attributes.push({"name":"ContentTitle", "value":$('#ContentTitle').val(), "type":"Text"});
+					attributes.push({"name":"TargetPageLink", "value":$('#TargetPageLink').val(), "type":"Text"});
+					attributes.push({"name":"MoreLink", "value":$('#MoreLink').val(), "type":"Text"});
+					return attributes; 
+				});		
+
+		 		$(document).data('sname', '{!SiteName}');
+				CKEDITOR.replace('ContentSummary',{!CKEditorConfig});
+			});
+		  </script>
+	  
+    <apex:outputPanel >
+        <form>
+            <table>
+              <tr>
+                <td>Image</td>
+                <td>
+                    <input type="hidden" name="ImageIdInput" id="ImageIdInput" value="{!ImageId}" />
+                    <c:ImageSelector sname="{!content.cms__Site_Name__c}" cPassThroughId="ImageIdInput" cImage="{!ImageId}" type="Image" disabled="{!disableAll}" />
+                </td>
+              </tr>
+              <tr>
+                <td>Title</td>
+           		<td>
+                	<apex:outputText escape="false" rendered="{!disableAll}">
+                    	<input type="text" name="ContentTitle" id="ContentTitle" value="{!ContentTitle}" disabled="disabled" size="70" />
+                	</apex:outputText>
+                	<apex:outputText escape="false" rendered="{!!disableAll}">
+                    	<input type="text" name="ContentTitle" id="ContentTitle" value="{!ContentTitle}" size="70"/>
+                	</apex:outputText>
+                </td>
+              </tr>
+              <tr>
+                <td>Content Summary</td>
+                <td>
+                	
+						<textarea name="ContentSummary" id="ContentSummary" rows="12" cols="50"><apex:outputText value="{!ContentSummary}" /></textarea>
+					
+					
+                </td>
+              </tr>
+              <tr>
+                <td>Target Page</td>
+                <td>
+                    <input type="hidden" name="TargetPageLink" id="TargetPageLink" value="{!TargetPageLink}" />
+                    <c:PageSelector cPassThroughId="TargetPageLink" value="{!TargetPageLink}" dialogId="SmallBlockWithImageTarget" sname="{!content.cms__Site_Name__c}" disabled="{!disableAll}" token="{!token}" />
+                </td>
+              </tr>
+              <tr>
+                <td>More Link</td>
+                <td>
+                	<apex:outputText escape="false" rendered="{!disableAll}">
+                    	<input type="text" name="MoreLink" id="MoreLink" value="{!MoreLink}" disabled="disabled" size="70" />
+                	</apex:outputText>
+                	<apex:outputText escape="false" rendered="{!!disableAll}">
+                    	<input type="text" name="MoreLink" id="MoreLink" value="{!MoreLink}" size="70" />
+                	</apex:outputText>
+                </td>
+              </tr>
+            </table>
+    	</form>
+    </apex:outputPanel>
+
+	<br /><br /><br />
+
+</apex:page>

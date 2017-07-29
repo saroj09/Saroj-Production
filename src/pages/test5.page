@@ -1,0 +1,7 @@
+<apex:page standardController="Resource__c" extensions="TestExtendController">
+    <apex:form >
+        Resource ID : {!ID} <br />
+        New Resource ID: {!newRid}<br />
+        <apex:commandButton action="{!dosomething}" value="Create new ID"/>
+    </apex:form>
+</apex:page>

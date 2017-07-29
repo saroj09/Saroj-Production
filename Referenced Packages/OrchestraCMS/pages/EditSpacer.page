@@ -1,0 +1,60 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.Spacer" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+	<script type="text/javascript" language="javascript" >	
+		$(document).ready(function(){
+
+			ce.content_editor('registerSaveFunction', function(){
+				var attributes = new Array(); 
+				attributes.push({"name":"SpacerHeight", "value":$('#SpacerHeight').val(), "type":"Text"});
+				attributes.push({"name":"BackgroundColor", "value":$('#BackgroundColor').val(), "type":"Text"});
+				return {'cli':attributes};
+			});			
+			
+			var location = "{!URLFOR($Resource.OrchestraCMSUI, '/selector/color/images/Bars.png')}";		
+			var path = location.substr(0, location.length-8);				
+			$('#BackgroundColor').jPicker({
+				window: {
+					position: {
+						x: 'screenCenter',
+						y: 'bottom'
+					}
+				},					
+				images:	{
+					clientPath: path, /* Path to image files */
+				}
+			});
+					
+		}); 
+	</script>
+
+	<apex:outputPanel >
+		<form>			
+			<table>
+				<tr>
+					<td style="font-size: 12px; font-family: arial;">Height</td> 
+					<td>
+						<apex:outputText rendered="{!disableAll}">
+							<input type="text" name="SpacerHeight" id="SpacerHeight" value="{!SpacerHeight}" size="3" disabled="disabled" />
+						</apex:outputText>
+						<apex:outputText rendered="{!!disableAll}">
+							<input type="text" name="SpacerHeight" id="SpacerHeight" value="{!SpacerHeight}" size="3" />
+						</apex:outputText>
+					</td>
+					<td>px</td>
+				</tr>		
+				<tr>
+					<td style="font-size: 12px; font-family: arial;">Background Color</td>
+					<td>
+						<apex:outputText rendered="{!disableAll}">
+							<input type="text" name="BackgroundColor" id="BackgroundColor" value="{!BackgroundColor}" size="6" disabled="disabled"/>
+						</apex:outputText>
+						<apex:outputText rendered="{!!disableAll}">
+							<input type="text" name="BackgroundColor" id="BackgroundColor" value="{!BackgroundColor}" size="6" />
+						</apex:outputText>						
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		
+		</form>
+	</apex:outputPanel>
+</apex:page>

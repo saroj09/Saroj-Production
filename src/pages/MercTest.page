@@ -1,0 +1,18 @@
+<apex:page standardController="Merchandise__c" recordSetVar="Merc">
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Saroj Merchandise Test</h1>
+ <apex:form >
+<apex:dataTable cellpadding="1" cellspacing="1" value="{!Merc}" var="pitem" style="background-color:blue">
+    <apex:column headerValue="Merchandise Name" style="background-color:white">
+        <apex:outputText value="{!pitem.Name}"></apex:outputText>
+    </apex:column>
+    <apex:column headerValue="Price" style="background-color:white">
+        <apex:inputField value="{!pitem.Price__c}" />
+    </apex:column>
+    <apex:column headerValue="Total Inventory" style="background-color:white">
+        <apex:outputField value="{!pitem.Total_Inventory__c}"/>
+    </apex:column>
+</apex:dataTable>
+<apex:commandButton action="{!quicksave}" value="Save"/>
+</apex:form>
+</apex:page>

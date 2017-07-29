@@ -1,0 +1,13 @@
+<apex:page standardController="account">
+    <apex:form >
+        <apex:pageBlock >
+            <b>Change Account Name and Type</b><p/>
+            Name:  <apex:inputField value="{!account.name}"/><p/>
+            Type:  <apex:inputField value="{!account.type}"/><p/>
+            <apex:commandButton action="{!save}" value="Save new Account"/><p/>
+        </apex:pageBlock>
+    </apex:form>
+    <apex:detail relatedList="false" />
+    <apex:relatedList list="Contacts"/>
+    <apex:relatedList list="Opportunities"/>
+</apex:page>

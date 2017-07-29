@@ -1,0 +1,7 @@
+<apex:page standardController="Project__c">
+  <apex:form >
+      <apex:inputText value="{!Project__c.Project_Name__c}"/>
+      <apex:commandButton action="{!Edit}" value="Edit {!Project__c.Project_Name__c}"/>
+      <apex:commandButton action="{!list}" value="Go back to list"/>
+  </apex:form>
+</apex:page>

@@ -1,0 +1,120 @@
+<apex:page docType="HTML-5.0" id="Registration" showHeader="false" 
+    standardcontroller="User" standardStylesheets="false"
+    extensions="SiteRegistrationController" title="Registration" action="{!checkLogin}">
+  <apex:composition template="templatebody">
+    <apex:define name="body">
+    <style>
+    .portal-entry{padding-top:30px;}
+    </style>
+   
+      <div class="row margin-t">
+        <div class="col-sm-7 col-md-6 col-lg-5 no-float center-block">
+          <div class="portal-entry clearfix">
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1">
+              	<c:block_header_registration />
+              	<apex:outputPanel layout="block">
+                 <apex:outputText >
+                  <h1 class="no-margin">Create an Account</h1>
+                  <p class="lead text-center"> Start your profile to access our community and more! </p>
+                </apex:outputText>
+                
+                 <apex:form id="RegForm" forceSSL="true" styleClass="ws-validate form-nolabel register">
+                  <apex:pageMessages />
+                  
+                  <div class="form-group">
+                    <apex:inputText html-data-toggle="popover"  html-data-content="Please use Latin letters(a-z), hyphens(-) and apostrophes(')" styleClass="sevis-strict form-control input-lg req first" onblur="CapitalizeName(event.target);" id="firstname"  value="{!firstname}"  html-placeholder="First Name" />
+                  </div>
+                  <div class="form-group">
+                    <apex:inputText html-data-toggle="popover" html-data-content="Please use Latin letters(a-z), hyphens(-) and apostrophes(')"  styleClass="sevis-strict form-control input-lg req" onblur="CapitalizeName(event.target);" 
+                                        id="lastname" value="{!lastname}" html-placeholder="Last Name" />
+                  </div>
+                  <div class="form-group">
+                    <apex:inputText html-data-toggle="popover"
+                                        html-data-content="Enter Email"
+                                        styleClass="form-control input-lg req" id="email" value="{!email}" 
+                                        html-placeholder="Email" />
+                  </div>
+                  <div class="form-group">
+                    <apex:inputText styleClass="form-control input-lg req"
+                                        id="ConfEmail" value="{!confirmEmail}" 
+                                        html-placeholder="Confirm Email"/>
+                  </div>
+                  
+                  <div class="form-group">
+                    <apex:inputSecret styleClass="form-control input-lg req"
+                                        html-data-toggle="popover"
+                                        html-data-content="Enter Password"
+                                        id="password" value="{!password}" html-placeholder="Password" />
+                  </div>
+                  <div class="form-group">
+                    <apex:inputSecret styleClass="form-control input-lg req"
+                                        id="confirmPassword" value="{!confirmPassword}"
+                                        html-placeholder="Confirm Password" />
+                  </div>
+                  
+                  <div class="form-group clearfix no-margin"> 
+                   
+                
+                    <apex:commandLink styleClass="btn btn-primary btn-lg btn-block" id="RegBlock" action="{!registerUser}" reRender="RegForm" status="onsubmit">
+                      <apex:commandButton value="Create an Account" />
+                    </apex:commandLink>
+                    <apex:outputLink styleClass="btn btn-link btn-lg btn-block margin-t"
+                                        value="{!$Site.Prefix}/AppEngine_SiteLoginPage"
+                                        rendered="{!ISPICKVAL($User.UserType,'Guest')}" target="_self"> <span><strong>
+                      <apex:outputText value="Already Registered? Login Here" />
+                      </strong></span> </apex:outputLink>
+                  </div>
+                  
+                  
+                  <script>
+               if(typeof lmtChars === 'function'){
+               lmtChars();
+               } 
+                  </script>
+                  
+                </apex:form>
+              </apex:outputPanel>
+                           
+                           
+            </div>
+            <!--  end column --> 
+          </div>
+          <!--  end  row --> 
+           </div>
+        </div>
+        <!--  end column --> 
+      </div>
+      <!--  end  row --> 
+      
+     
+      <style>
+select.form-control{color:#a7a7a7;}
+select{color:#a7a7a7;}
+select option{color:#202020;}
+</style>
+      <script>  
+var j$ = jQuery.noConflict();
+   
+function selectplh(target){ 
+j$(document).ready(function () {
+var svalue = j$('select option:selected').val();     
+    if(svalue == "") {
+    j$(target).css('color', '#a7a7a7');
+}    
+else {
+    j$(target).css('color', '#202020');
+}
+});
+};
+
+selectplh();
+
+
+</script> 
+
+
+
+    </apex:define>
+  </apex:composition>
+</apex:page>

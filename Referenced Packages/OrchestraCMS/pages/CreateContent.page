@@ -1,0 +1,166 @@
+<apex:page controller="cms.CreateContentController" id="createContent" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false" >
+<head>
+
+  <apex:stylesheet value="{!URLFOR($Resource.cms__jqueryui, '/css/ocms.css')}" />
+  <apex:stylesheet value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/color/css/jPicker-1.1.6.min.css')}" />
+
+  <c:CmsScripts />
+
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/TabInterface.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/dam/LibraryManagerDlgs.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/dam/LibraryBrowser.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__ckedit, 'ckeditor/ckeditor.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/page/PageSelector.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/link/LinkSelector.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/link/LinkSelectorDialog.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/editor/MenuEditor.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/color/jpicker-1.1.6.min.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/editor/CreateContent.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/editor/TagEditor.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/AccessDialogs.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/AccessLevelSelector.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/RestrictionGroupSelector.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/RestrictionCustomSelector.js')}" />  
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/PrioritySelector.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/widget/JQueryFullDialog.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, 'VersionHistory.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSPublic, '/OCMSSecureUrlLoad.js')}" />
+
+  <script type="text/javascript">
+  	$(document).data('cms', {
+			context 	: 'orchestracms',
+			namespace : '{!namespace}',
+			csrf_token: '{!token}',
+			site_name : '{!content.Site_Name__c}'
+	});
+	
+	var ce;
+
+  	$(document).ready(function(){		
+		if({!IF(showActionBar && !ISNULL(content), 'true', 'false')}) {
+			
+			ce = $('#edit-toolbar').content_editor({
+				published				: {!content.Published__c},
+				sitePrefix				: '{!JSENCODE(site_info.Site_Prefix__c)}',
+				content					: {!SerializedContent},
+				disableName				: {!disableName},
+				disableAll				: {!disableAll},
+				disableDates			: {!disableDates},
+				contentName				: '{!JSENCODE(content.Name__c)}',
+				contentId				: '{!JSENCODE(content.Id)}',
+				contentVersion			: '{!JSENCODE(TEXT(content.Version_Number__c)+'.'+TEXT(content.Revision_Number__c))}',
+				contentAvailable		: '{!JSENCODE(available)}',
+				actionSaveAndClose		: null,
+				actionSave				: null,
+				closeTab				: {!close_tab},
+				tab						: '{!JSENCODE(tab)}',
+				templates				: {!layouts},
+				template_options		: {!layoutAddOptions},
+				content_type 			: '{!content.Content_Type__r.Name__c}',
+				allow_tags				: {!allowTags},
+			 	removeBtnInactive       : '{!URLFOR($Resource.CmsImages,'/btnCloseInactive.png')}',
+			 	removeBtnActive         : '{!URLFOR($Resource.CmsImages,'/btnCloseActive.png')}',
+			 	allowPublishedDelete    : {!allowPublishedDelete},
+			 	state					: '{!state}',
+			 	allowSave				: {!allowSave},
+			 	allowDelete				: {!allowDelete},
+			 	allowPublish			: {!allowPublish},
+			 	allowClone				: {!allowClone},
+			 	allowNewVersion			: {!allowNewVersion},
+			 	allowNewRevision		: {!allowNewRevision},
+			 	allowPublishedDelete    : {!allowPublishedDelete},
+			 	showPublicTags			: {!showPublicTags},
+			 	showPersonalTags		: {!showPersonalTags},
+		   		groupRestrictions		: {!groupRestrictionsJSON},
+		   		customRestrictions		: {!customRestrictionsJSON},		 	
+			 	allowExpire				: {!allowExpire},
+			 	content_status		    : '{!content_status}',
+			 	content_expiry_date		: '{!content_expiry_date}',
+			 	sname					: '{!content.Site_Name__c}',
+			 	isMenu					: {!isMenu},
+			 	uname					: '{!$User.FirstName}' + ' '	+ '{!$User.LastName}',
+				showSendForApproval		: {!showSendForApproval},
+				showShare				: {!showShare},
+				showCompliance			: {!showCompliance},
+				sentForApproval			: {!sentForApproval},
+				allowSentForApprovalEdit: {!allowSentForApprovalEdit},
+				token					: '{!token}',
+				showTaxonomy			: {!showTaxonomy},
+				showTemplates			: {!showTemplates},
+				preview_link			: '{!preview_link}',
+				autoSave				: {!AutoSave},
+				VersionJSON				: '{!VersionsJSON}',
+				allVisitors				: {!allVisitors},
+				allCollaborators		: {!allCollaborators},
+				allLayouts				: {!allLayouts},
+				originId				: '{!content_origin.Id}',
+				isTemplateSharingOn		: {!isTemplateSharingOn},
+				levels					: {!levels},
+				deleteUrl 				: '{!deleteUrl}',
+				cliId					: '{!current_content_layout_instance.Id}',
+				current_cl			    : {!current_content_layoutJSON}
+			 });
+		}
+
+        $(window).bind('resize', function() {
+            resizeContentEditorArea();
+        });
+
+        setTabStatus('{!JSENCODE(tab)}', '{!content_status_state}');
+        resizeContentEditorArea();
+        
+        $.orchestracmsSecureUrlLoad.doLoadS3SecureUrl();
+    
+    
+    	//if the content is published disable all input 
+    
+    	if({!content.Published__c})	{
+    		//disable all inputs, this will make it easier when creating templates. Template creates won't have to worry about disabling the fields themselves it makes the code messy and a pain
+    		//might as well disable everything with javascript client side and just make sure if someone disables javascript 
+    		$('.ocms-content-editor-panel').find('input, textarea, select').attr('disabled','disabled');
+    		CKEDITOR.config.readOnly = true; 
+    		
+    	}
+    
+    
+        
+  	});
+
+    function resizeContentEditorArea(){
+        var cntEditorPanel = $('.ocms-content-editor-panel');
+        var eph1 = cntEditorPanel.css('padding-top');
+        var eph2 = cntEditorPanel.css('padding-bottom');
+        if(eph1 != null && eph1 != undefined)
+            eph1 = parseInt(eph1.substring(0,eph1.length-2));
+        else
+            eph1 = 0;
+        if(eph2 != null && eph2 != undefined)
+            eph2 = parseInt(eph2.substring(0,eph2.length-2));
+        else
+            eph2 = 0;
+        $('#contentEditBlock').height(($('body').outerHeight(true))-($('#contentEditActionBar').outerHeight(true) + $('.contentEditForm').outerHeight(true))-(eph1+ eph2));
+    }
+
+  </script>
+ 
+</head>
+
+<body class="ocms" style="padding: 0px; margin: 0px;">
+
+  <div id="edit-toolbar"></div>
+
+  <apex:outputPanel rendered="{!!hasAccess}">
+  	<div style="padding: 10px;">You do not have the privileges required to edit this content.</div>
+  </apex:outputPanel>
+
+  <apex:outputPanel rendered="{!hasAccess}">
+	<div id="contentEditActionBar"></div>
+	<div id="contentEditBlock">
+		<div class="ocms-content-editor-panel">
+			<apex:composition template="{!EditPage}" />
+		</div>
+	</div>
+  </apex:outputPanel>
+</body>
+
+</apex:page>

@@ -1,0 +1,58 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.Listable" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+
+	<apex:outputPanel layout="block" style="padding: 5px;">
+	
+	 	<script type="text/javascript" language="javascript">
+			$(document).ready(function(){
+				
+				ce.content_editor('registerSaveFunction', function(){
+					var attributes = new Array();
+		
+					attributes.push({"name":"ListSummary", "value":$('#ListSummary').val(), "type":"Text"});
+					attributes.push({"name":"TargetLink", "value":$('#TargetLink').val(), "type":"Text"});
+					attributes.push({"name":"ListableMoreLink", "value":$('#MoreLink').val(), "type":"Text"});
+				
+					return attributes; 
+				})
+	
+	 		}); 
+		</script>
+	
+		<form>
+	
+			<table>
+				<tr>
+					<td>List Summary</td>
+					<td>
+						<apex:outputText escape="false" rendered="{!disableAll}">
+							<textarea id="ListSummary" name="ListSummary" disabled="disabled"><apex:outputText value="{!ListSummary}" /></textarea>
+						</apex:outputText>
+						<apex:outputText escape="false" rendered="{!!disableAll}">
+							<textarea id="ListSummary" name="ListSummary"><apex:outputText value="{!ListSummary}" /></textarea>
+						</apex:outputText>
+					</td>
+				</tr>
+				<tr>
+					<td>Target Link</td>
+					<td>
+						<input type="hidden" id="TargetLink" name="TargetLink" value="{!TargetLink}" />
+					    <c:PageSelector cPassThroughId="TargetLink" value="{!TargetLink}" dialogId="TargetLinkDlg" disabled="{!disableAll}" sname="{!content.cms__Site_Name__c}" token="{!token}" />
+					</td>
+				</tr>
+		        <tr>
+		        	<td>More Link</td>
+		            <td>
+		            	<apex:outputText escape="false" rendered="{!disableAll}">
+		            		<input type="text" id="MoreLink" name="MoreLink" value="{!ListableMoreLink}" disabled="disabled" />
+		            	</apex:outputText>
+		            	<apex:outputText escape="false" rendered="{!!disableAll}">
+		            		<input type="text" id="MoreLink" name="MoreLink" value="{!ListableMoreLink}" />
+		            	</apex:outputText>
+		            </td>
+		         </tr>
+			</table>
+		</form>
+	</apex:outputPanel>
+
+
+</apex:page>

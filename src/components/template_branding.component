@@ -1,0 +1,69 @@
+<apex:component layout="none" id="headerComponent" allowDML="true">
+  <apex:form >
+    <apex:outputText > <!-- rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" -->
+    <div id="branding-zone">
+      <div id="branding-zone-inner">
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+               
+              <!-- rendered="{!(NOT(ISPICKVAL($User.UserType,'Guest')))}"-->
+              <apex:outputlink styleClass="navbar-brand"
+                        target="_self"
+                         value="{!$Site.Prefix}/your_applications">
+                <apex:image width="161" height="54" url="{!URLFOR($Resource.saroj_portal_images, '/saroj_portal_images/logo.png')}"
+                                 />
+              </apex:outputlink>
+              
+             
+            </div>
+            <!-- end navbar-header --> 
+            
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <apex:outputText rendered="{!AND(ISPICKVAL($User.UserType,'Guest'), $Site.LoginEnabled)}"> 
+                  <!-- For Unauthenticated Users -->
+                  <li>
+                    <apex:outputLink value="{!$Site.Prefix}/AppEngine_SiteLoginPage"
+                                        rendered="{!ISPICKVAL($User.UserType,'Guest')}" target="_self">Login</apex:outputLink>
+                  </li>
+                  <apex:outputText >
+                    <li>
+                      <apex:outputLink value="{!$Site.Prefix}/SiteRegistration" disabled="{! IF($CurrentPage.Name=='customers', true, false)}" 
+                                rendered="{!$Site.RegistrationEnabled}" target="_self">New User? Register</apex:outputLink>
+                    </li>
+                  </apex:outputText>
+                </apex:outputText>
+                <apex:outputText rendered="{!(NOT(ISPICKVAL($User.UserType,'Guest')))}">
+                <!-- For Authenticated Users -->
+                
+                  <!-- For APC PT Home-->
+                  <li>
+                    <apex:outputLink value="{!$Site.Prefix}/home" target="_top">Home </apex:outputlink>
+                  </li>
+                  <li>
+                  		<apex:outputText >
+                    		<apex:outputLink value="{!$Site.Prefix}/account_overview" >Account Settings</apex:outputLink>
+                  		</apex:outputText>
+                	</li>
+	                <li>
+	                  <apex:outputLink value="{!$Site.Prefix}/AppEngine_Logout" target="_top" >Logout</apex:outputLink>
+	                </li>
+                </apex:outputText>
+              </ul>
+            </div>
+            <!-- navbar-collapse --> 
+            
+          </div>
+          <!-- end container --> 
+        </nav>
+        <!-- end navbar --> 
+      </div>
+      <!--  end branding zone inner --> 
+    </div>
+    <!--  end branding zone -->
+    
+    </apex:outputText>
+  </apex:form>
+</apex:component>

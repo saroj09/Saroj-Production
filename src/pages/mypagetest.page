@@ -1,0 +1,7 @@
+<apex:page controller="MyPageController">
+    <apex:form >
+     Your Name: <apex:inputText value="{!name}"/>
+     <apex:outputtext value="{!message}"></apex:outputtext>
+     <apex:commandButton action="{!hello}" value="Say Hi"/>
+    </apex:form>
+</apex:page>

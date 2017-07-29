@@ -1,0 +1,52 @@
+<apex:page controller="Checkbox_Class" Tabstyle="Contact" sidebar="false" showHeader="false">
+	<apex:form >
+		<apex:pageBlock Title="Selected value with CheckBoxes">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Save" action="{!save}" OnClick="show_alert()" />
+				<apex:commandButton value="Cancel" action="{!cancel}" onclick="confirmcancel()"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockTable value="{!accounts}" var="a" >
+				<apex:column >
+					<apex:facet name="header">
+						<apex:inputCheckbox >
+							<apex:actionSupport event="onclick" action="{!GetSelected}" onsubmit="checkAll(this)" rerender="Selected_PBS"/>
+						</apex:inputCheckbox>
+					</apex:facet>
+					<apex:inputCheckbox value="{!a.selected}" id="checkedone">
+						<apex:actionSupport event="onclick" action="{!GetSelected}" rerender="Selected_PBS"/>
+					</apex:inputCheckbox>
+				</apex:column>
+				<apex:column headervalue="Name" value="{!a.acc.Project_Name__c}" />
+				<apex:column headervalue="Date" value="{!a.acc.Status__c}" />
+				
+				<!-- <apex:column headervalue="Excused Absence">
+					<apex:inputfield value="{!a.acc.Excused_Absence__c}" />
+				</apex:column>
+				<apex:column headervalue="Present">
+					<apex:inputfield value="{!a.acc.Present__c}" />
+				</apex:column>
+
+				<apex:column headervalue="Excuse Details">
+					<apex:inputField value="{!a.acc.Excuse_Details__c}" />
+				</apex:column>
+				<apex:column headervalue="Rubric(#)">
+					<apex:inputfield value="{!a.acc.Rubric__c}" />
+				</apex:column>
+				<apex:column headervalue="Session" value="{!a.acc.Session__c}" />
+				<apex:column headervalue="Youth Last Name" value="{!a.acc.Youth__r.LastName}" />  -->
+			</apex:pageBlockTable>
+
+</apex:pageBlock>
+</apex:form>
+<script>
+function checkAll(cb)
+{
+var inputElem = document.getElementsByTagName("input");
+for(var i=0; i<inputElem.length; i++)
+{
+if(inputElem[i].id.indexOf("checkedone")!=-1)
+inputElem[i].checked = cb.checked;
+}
+}
+</script>
+</apex:page>

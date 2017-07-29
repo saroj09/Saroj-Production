@@ -1,0 +1,19 @@
+<apex:page controller="rptlist">
+  <apex:form id="form">
+  <apex:pageBlock id="docListBlock" rendered="{!if(allrpts.Size > 0, true, false)}" >
+        <apex:pageBlockTable id="docListTable" styleClass="pageblocktable" value="{!allrpts}" var="item">
+            <apex:column headerValue="Name">
+                <apex:outputText id="rpt_Name" value="{!item.Name}"/>
+            </apex:column>
+             <apex:column >
+            <apex:commandlink id="docGUID" styleClass="inline-link" action="{!getUrl}" target="_blank">
+                <apex:param name="guid" value="{!item.id}"/>
+                <apex:param name="csv" value="1"/>
+                <apex:commandButton value="{!item.Name}" />
+            </apex:commandlink>
+            </apex:column>
+            
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

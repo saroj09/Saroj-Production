@@ -1,0 +1,25 @@
+<apex:component layout="none">
+<apex:attribute name="uInParameter" description="manage the background" type="String" required="false" default=""/>
+<apex:attribute name="userAgentCheck" description="check if smartphone" type="String" required="false" default=""/>
+<!--  assigning the right background image -->  
+<style> 
+body{background:none no-repeat scroll 50% -100px #f8f8f8;}
+#content-zone{background:transparent;}
+.portal-entry{background: none;}
+
+<apex:outputText >    
+/* IGI Interns */
+<apex:outputText rendered="{!userAgentCheck=='smartphone'}">
+body {background:black 0 0 no-repeat;}
+</apex:outputText>
+<apex:outputText rendered="{!userAgentCheck!='smartphone'}">
+body {background:black 50% 0 no-repeat;}
+</apex:outputText>
+.portal-entry{background-image:none;}
+</apex:outputText>  
+
+
+
+</style>
+    
+</apex:component>

@@ -1,0 +1,350 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.HorizontalImageBar" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+	
+	<style type="text/css">
+		#images { list-style-type: none; margin: 0; padding: 0;}
+		#images li { margin: 3px 3px 3px 0; padding: 1px; float: left; font-size: 4em; text-align: center; border: 1px solid #CCCCCC; }
+	</style>
+
+	<c:CmsScripts />
+    <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/dam/LibraryBrowser.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/link/LinkSelector.js')}" />
+
+  	<script type="text/javascript">
+  	
+		$.widget('ocms.hib_image', {	
+			options: {
+				imageId: '',
+				titleText: '',
+				altText: '',
+				link: '',
+				linkName: '',
+				token: '{!token}'
+			},
+		
+			_create: function() {
+				var self = this, o = this.options;		
+			},
+			
+			_openDialog: function() {
+				var self = this, o = this.options;   
+			
+				if(self.edit_dialog == undefined) {
+					self.edit_dialog = $('<div></div>'); 
+					self.edit_dialog.ocmsShowMultiInputDlg({
+			           		input_form: '<div><table class="ocms-input-table">'+
+											'<tr><td><label for="image-alt-text">Alternative Text</label></td><td><input name="image-alt-text" id="image-alt-text" type="text" value="'+((o.altText == undefined || o.altText == null || o.altText == 'null') ? $(self.element[0]).find('.bar-image').attr('title') : o.altText)+'" size="60" /></td>'+
+											'<tr><td><label for="image-title-text">Title Text</label></td><td><input name="image-title-text" id="image-title-text" type="text" value="'+((o.titleText == undefined || o.titleText == null || o.titleText == 'null') ? '' : o.titleText)+'" size="60" /></div>'+
+											'<tr><td><label for="target_url">Link</label></td><td><div id="target_url"></div></div>'+
+										'<table></div>',
+							title: 'Edit Properties',
+							minWidth: 600,
+							autoOpen: false,
+							onOK: function(dialog, form) {
+							
+								o.link = dialog.dlg.find('#target_url').page_selector_input('getSelected');																
+								o.altText = dialog.dlg.find('#image-alt-text').val();
+								o.titleText = dialog.dlg.find('#image-title-text').val();
+								
+								SetValues();
+								dialog.closeDialog();
+							},
+	
+							setup: function(dialog, form) {
+	
+								dialog.find('#image-alt-text').ocmsInput({instructionalText:'Necessary for accessibility compliance'});
+								dialog.find('#image-title-text').ocmsInput({instructionalText:'Text that appears when the mouse pointer hovers over the image'});
+	
+								dialog.find('#target_url').page_selector_input({
+									sname: site_name,
+									input_id: 'image_link',
+									selected_name: o.linkName,
+									selected: o.link,
+									token: o.token
+								});
+	
+							},
+							onCANCEL: null
+					});
+				} else {
+					self.edit_dialog.ocmsShowMultiInputDlg('openDialog');
+				}
+			},
+			
+			setupControls: function(){
+
+				var self = this, o = this.options; 
+
+				var controls = $('<div style="position: relative"></div>');
+				edit = $('<a style="float:left;" title="Edit Properties" href="#"><img src="{!URLFOR($Resource.CmsImages,'/btn_page_properties.png')}" border="0" /></a>');
+
+				edit.bind('click', function() {
+					self._openDialog(); 
+					return false;
+				});
+
+				var remove = $('<a style="float:right;" title="Remove" href="#"><img src="{!URLFOR($Resource.CmsImages,'/btn_remove.png')}" border="0" /></a>');
+				var clear = $('<div style="clear:both;"></div>');
+
+				remove.bind('click', function() {
+					$(self.element[0]).remove();							
+					SetValues();
+					return false;
+				});
+
+				controls.append(edit);
+				controls.append(remove);
+				controls.append(clear);
+				$(self.element[0]).find('.image-container').append(controls);			
+			
+			},
+			
+			getImageId: function() {
+				return this.options.imageId; 
+			},
+			
+			getTitleText: function() {
+				return this.options.titleText; 
+			},
+			
+			getAltText: function() {
+				return this.options.altText; 
+			},
+
+			getLink: function() {
+				return this.options.link;	 
+			}
+		})
+
+		var site_name 		= '{!content.Site_Name__c}';
+		var isPublished = {!published};
+		var isDisabled = {!disableAll};
+
+		function SetValues() {
+			if(!isPublished) {
+				$('#images').sortable('refresh');
+				var ordered = $('#images').sortable('toArray');
+
+				var image_ids = '';
+				var links = '';
+
+				for(i=0; i < ordered.length; ++i) {
+
+					var id = $('#'+ordered[i]).hib_image('getImageId'); 
+					var imageLink = $('#'+ordered[i]).hib_image('getLink'); 
+					image_ids += id;
+
+
+					if(imageLink !== undefined && imageLink !== null && imageLink != '') {
+							var name = (imageLink['pageName'] == undefined ? imageLink['name'] : imageLink['pageName']);
+							links += imageLink['type']+','+imageLink['id']+','+imageLink['targetType']+','+name+','+imageLink['width']+','+imageLink['height']+','+imageLink['url'];
+					} else {
+						links += ',,,,,';
+					}
+
+					if(i < ordered.length - 1 ) {
+						image_ids += ',';
+						links += ';';
+					}
+				}
+			}
+			
+			$('#ImageIds').val(image_ids);
+			$('#Links').val(links);
+		}
+
+
+		
+		$(document).ready(function() {
+
+				ce.content_editor('registerSaveFunction', function(){
+					var attributes = new Array();
+					attributes.push({"name":"ImageIds", "value":$('#ImageIds').val(), "type":"Text"});
+					attributes.push({"name":"Links", "value":$('#Links').val(), "type":"Text"});
+					attributes.push({"name":"Alignment", "value":$('#Alignment').val(), "type":"Text"});
+	
+					var ordered = $('#images').sortable('toArray');
+					for(var i=0; i<ordered.length; ++i) {
+						
+						var image = $('#'+ordered[i]);
+						
+						var altText = image.hib_image('getAltText');
+						var titleText = image.hib_image('getTitleText');
+	
+						attributes.push({"name":"AltText"+i, "value":((altText == undefined || altText == null || altText == 'null') ? '' : altText), "type":"Text"});
+						attributes.push({"name":"TitleText"+i, "value":((titleText == undefined || titleText == null || titleText == 'null') ? '' : titleText), "type":"Text"});
+					}
+
+					return attributes; 
+ 				});
+
+				if(!isPublished && !isDisabled) {
+					$('#images').sortable({
+						tolerance: 'pointer',
+						stop: function() {
+							SetValues();
+						}
+					});
+				}
+
+				$(document).data('sname', '{!JSENCODE(content.Site_Name__c)}');
+				var ImageLinks 		= {!ImageLinksJSON};
+				var ImageLinkNames 	= {!ImageLinkNamesJSON};
+				var ImageIdsStr 	= '{!ImageIds}';
+				var ImageIds 		= ImageIdsStr.split(',');
+   		
+ 				var	ImageAltText = {!ImageAltText};
+ 				var	ImageTitleText = {!ImageTitleText};
+ 							
+ 				var index = 0; 
+ 							
+				<apex:repeat id="r1" value="{!ImageLinks}" var="image">
+						$('#images').append(CreateImage("{!image.ImageId}", 
+														ImageLinkNames["{!image.Index}"], 
+														ImageTitleText["{!image.Index}"], 
+														ImageAltText["{!image.Index}"], 
+														ImageLinks["{!image.Index}"], 
+														ImageLinkNames["{!image.Index}"]));
+				</apex:repeat>
+
+				SetValues();
+
+				var libBrowser = $('#AddImage').ocmsLibraryBrowser({
+	                pageHelpText: 'Lib.Browser.Help'.localize()
+				});
+				
+			   	//Add Image
+				var AddImageDlg = $("#AddImage").dialog({
+	            	bgiframe: true,
+	            	title: 'Select Image',
+	                autoOpen: false,
+	                height: 400,
+	                width: 800,
+	                modal: true,
+			        open: function() {
+			            libBrowser.ocmsLibraryBrowser('resize');
+			        },
+			        focus: function() {
+			            libBrowser.ocmsLibraryBrowser('resize');
+			        },
+			        close: function() {
+			        },
+			        resize: function(){
+			            libBrowser.ocmsLibraryBrowser('resize');
+			        }
+				});
+
+				AddImageDlg.dialog('addButton', 'cancel'.localize(), function (event) {
+	                $(this).dialog('close');
+	            });
+	            AddImageDlg.dialog('addButton', 'select'.localize(), function (event) {
+	                var img = libBrowser.ocmsLibraryBrowser('getSelected');
+	                if(img != null)
+	                {
+						$('#images').append(CreateImage(img.url, img.name, '', '', '', ''));
+						$('#images').sortable('refresh');
+						$(this).dialog('close');
+						SetValues();
+					}
+	            });
+
+
+				if(!isPublished && !isDisabled) {
+					$('#addImageButton').bind('click', function(event) {
+						$('#AddImage').dialog('open');
+						return false;
+					});
+					$('#addImageButton').button();
+				} else {
+					$('#addImageButton').button({disabled: true});
+				}
+
+				function CreateImage(id, name, title, alt, link, ln) {
+
+					var image = $('<li ui-widget-content ui-corner-tr ui-draggable id="img-'+index+'"></li>');
+					var container = $('<div class="image-container"><img class="bar-image" title="'+((name == 'null' || name == null) ? '' : name)+'" src="'+id+'" /></div>');
+
+					image.append(container);
+					image.hib_image({
+						imageId: id,
+						titleText: title,
+						altText: alt,
+						link: link,
+						linkName: ln
+					});
+
+
+					if(!isPublished && !isDisabled){
+						image.hib_image('setupControls');
+					}
+					
+					$('#images').append(image);
+					
+					++index; 
+					return image;
+				}
+			});
+	</script>
+
+
+	<apex:outputPanel id="o" >
+		<form>
+
+			<input type="hidden" name="ImageIds" id="ImageIds"  value="{!ImageIds}" />
+			<input type="hidden" name="Links" id="Links" value="{!Links}" />
+
+			<table>
+				<tr>
+					<td><strong>Align</strong></td>
+					<td>
+						<apex:outputText escape="false" rendered="{!!disableAll}">
+
+							<select id="Alignment" name="Alignment">
+								<apex:repeat value="{!AlignmentOptions}" var="a" >
+									<apex:outputText escape="false" rendered="{!a.selected}">
+										<option value="{!a.so.Value}" selected="selected"><apex:outputText value="{!a.so.Label}" /></option>
+									</apex:outputText>
+									<apex:outputText escape="false" rendered="{!!a.selected}">
+										<option value="{!a.so.Value}"><apex:outputText value="{!a.so.Label}" /></option>
+									</apex:outputText>
+								</apex:repeat>
+							</select>
+
+						</apex:outputText>
+						<apex:outputText rendered="{!disableAll}">
+
+							<select id="Alignment" name="Alignment" disabled="disabled">
+								<apex:repeat value="{!AlignmentOptions}" var="a" >
+									<apex:outputText escape="false" rendered="{!a.selected}">
+										<option value="{!a.so.Value}" selected="selected"><apex:outputText value="{!a.so.Label}" /></option>
+									</apex:outputText>
+									<apex:outputText escape="false" rendered="{!!a.selected}">
+										<option value="{!a.so.Value}"><apex:outputText value="{!a.so.Label}" /></option>
+									</apex:outputText>
+								</apex:repeat>
+							</select>
+
+						</apex:outputText>
+
+					</td>
+				</tr>
+			</table>
+
+		</form>
+	</apex:outputPanel>
+
+	<br />
+
+	<div style="position: relative;" id="addImageContainer">
+		<a href="#" id="addImageButton"><strong><span style="color: #336600;">Add</span> Image</strong></a>
+	</div>
+
+	<br />
+
+	<div id="AddImage">
+    </div>
+
+
+	<ul id="images">
+	</ul>
+
+</apex:page>

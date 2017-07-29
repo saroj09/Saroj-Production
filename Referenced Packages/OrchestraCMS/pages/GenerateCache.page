@@ -1,0 +1,5 @@
+<apex:page docType="{!controller.router.doc_type}" controller="cms.CoreController" showHeader="false" sidebar="false" cache="{!router.page_cache}" expires="{!router.page_expires}" title="{!router.page_title}" standardStylesheets="false" renderAs="{!render_as}" applyBodyTag="false">    
+
+	<apex:composition template="{!page_layout_reference}" />
+	
+</apex:page>

@@ -1,0 +1,28 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.SearchBasicFormController"  showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+	<apex:outputPanel layout="block" style="padding: 5px;">
+	
+	 	<script type="text/javascript" language="javascript">
+			$(document).ready(function(){
+                ce.content_editor('registerSaveFunction', function(){
+                    var attributes = new Array();
+                    attributes.push({"name":"ResultsPage", "value":$('#ResultsPage').val(), "type":"Text"});
+                    return attributes;
+                });
+			});
+		</script>
+	
+	<form>
+		<table>
+	        <tr>
+	            <td>Results Page</td>
+	            <td>
+	                <input type="hidden" name="ResultsPage" id="ResultsPage" value="{!ResultsPage}" />
+	
+	                <c:PageSelector cPassThroughId="ResultsPage" value="{!ResultsPage}"  dialogId="ResultsPageDlg" disabled="{!content.cms__Published__c}" sname="{!content.cms__Site_Name__c}" token="{!token}" />
+	            </td>
+	        </tr>
+	    </table>
+	</form>
+	</apex:outputPanel>
+
+</apex:page>

@@ -1,0 +1,18 @@
+<apex:page controller="TestMyPageController">
+{!message}<br />
+ <apex:form >
+     <apex:pageBlock title="Sample Code">
+         <apex:pageBlockButtons >
+             <apex:commandButton action="{!doSomething}" value="Do Something"/>
+         </apex:pageBlockButtons>
+         <apex:pageblockTable value="{!resources}" var="resource">
+             <apex:column headerValue="selected">
+                 <apex:inputCheckbox value="{!resource.selected}"/>
+             </apex:column>
+             <apex:column headerValue="Resource Name">
+                 {!resource.data.Name}
+             </apex:column>
+         </apex:pageblockTable>
+     </apex:pageBlock>
+ </apex:form>
+</apex:page>

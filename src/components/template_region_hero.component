@@ -1,0 +1,12 @@
+<apex:component layout="none" id="heroComponent" allowDML="true">
+ 
+<apex:outputText > <!-- rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" -->
+<style>
+.customer-community .hero-area {
+	height: 120px;
+	background: #0080C0 no-repeat 50% 0;
+}
+</style>
+</apex:outputText>
+</apex:component>
+<!-- 3276B1 -->

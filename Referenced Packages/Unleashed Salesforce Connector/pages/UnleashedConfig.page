@@ -1,0 +1,107 @@
+<apex:page controller="unleashed.UnleashedConfigController" action="{!init}" showHeader="true" sidebar="true">
+<style type="text/css">
+    .wide { width: 260px; }
+</style>
+<style type="text/css">
+    .rlywide { width: 630px; }
+</style>
+<style>
+    .ct{
+        text-align:center;
+    }
+</style>
+
+<apex:pageMessages />
+    <apex:form >
+        <apex:actionPoller action="{!refreshCounters}" rerender="unleashedStats" interval="5" />
+
+        <apex:pageBlock title="Unleashed Connection">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Save API ID and Key" action="{!saveConfig}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="API ID"/>
+                    <apex:inputField styleClass="wide" value="{!config.unleashed__ApiId__c}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="API Key"/>
+                    <apex:inputField styleClass="rlywide" value="{!config.unleashed__ApiKey__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection id="advancedSettings" title="Advanced" columns="1" collapsible="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unleashed URL" title="It is not recommended to change the default Unleashed url value of 'https://api.unleashedsoftware.com'"/>
+                    <apex:inputField styleClass="rlywide" value="{!config.unleashed__UnleashedUrl__c}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection> 
+            <script> 
+                twistSection(document.getElementById('{!$Component.advancedSettings}').getElementsByTagName('img')[0]);
+            </script>
+        </apex:pageBlock>
+        
+        <apex:pageBlock id="unleashedStats" title="Synchronise with Unleashed">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Import Unleashed Data" action="{!importAll}" disabled="{!isConfigRequired}" title="Import Products, Taxes, Delivery Methods, Warehouses, Sales Persons, Sales Groups"/>
+                <apex:commandButton value="Import Unleashed Customers" style="color: orange;" action="{!importCustomers}" disabled="{!isConfigRequired}" title="Import all of the Unleashed Customers into New Salesforce Accounts"/>
+                <apex:commandButton value="Delete Unleashed Data" style="color: red;" action="{!deleteAllNow}"  title="Delete Unleashed Taxes, Delivery Methods, Warehouses, Sales Persons, and Sales Groups"/>
+            </apex:pageBlockButtons>
+
+            <apex:pageBlockSection columns="2">
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Synced"/>
+                    <apex:outputField value="{!config.unleashed__LastSynced__c}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unleashed Products *"/>
+                    <apex:outputText value="{!numUnleashedProducts}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unleashed Taxes"/>
+                    <apex:outputText value="{!numTaxes}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unleashed Warehouses"/>
+                    <apex:outputText value="{!numWarehouses}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unleashed Salespersons" />
+                    <apex:outputText value="{!numSalespersons}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unleashed Sales Groups" />
+                    <apex:outputText value="{!numSalesOrderGroups}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unleashed Delivery Methods" />
+                    <apex:outputText value="{!numDeliveryMethods}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unleashed Customers **" />
+                    <apex:outputText value="{!numCustomers}"/>
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="* Products are imported asynchronously and may take a while to import."/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="** Customers are synchronised as required, or you can bulk import them here."/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

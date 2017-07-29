@@ -1,0 +1,8 @@
+<apex:page id="m" docType="{!router.doc_type}" apiVersion="27" readOnly="true" controller="cms.CoreController" extensions="cms.PreviewController" showHeader="false" sidebar="false" cache="{!router.page_cache}" expires="{!router.page_expires}" standardStylesheets="false" title="{!router.page_title}" language="{!router.page.cms__Language__c}" renderAs="{!render_as}" applyBodyTag="false" applyHtmlTag="false">
+
+	<apex:outputText escape="false" value="{!htmlTag}" />
+   		<apex:composition template="{!page_layout_reference}" /> 
+    <apex:outputText escape="false" value="</html>" />
+
+
+</apex:page>

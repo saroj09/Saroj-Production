@@ -1,0 +1,95 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.SimpleHorizontalMenu" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+
+
+	<script type="text/javascript" language="javascript" >
+		
+			$(document).ready(function(){
+				ce.content_editor('registerSaveFunction', function(){
+					var attributes = new Array(); 
+					attributes.push({"name":"LinkColor", "value":$('#LinkColor').val(), "type":"Text"});
+					attributes.push({"name":"LinkHoverColor", "value":$('#LinkHoverColor').val(), "type":"Text"});
+					attributes.push({"name":"LinkFontSize", "value":$('#LinkFontSize').val(), "type":"Text"});
+					attributes.push({"name":"Divider", "value":$('#Divider').val(), "type":"Text"});
+					return {'cli':attributes};
+				});
+
+				
+				var location = "{!URLFOR($Resource.OrchestraCMSUI, '/selector/color/images/Bars.png')}";
+				var path = location.substr(0, location.length-8);
+				
+				$('#LinkColor, #LinkHoverColor').jPicker({
+						window: {
+							position: {
+								x: 'screenCenter',
+								y: 'bottom'
+							}
+						},
+						images:	{
+							clientPath: path, /* Path to image files */
+						}
+					});
+				}); 
+	</script>
+
+
+	<div style="width: 400px; padding-right: 10px; margin-right: 10px; float: left;">
+		<c:MenuEditor disabled="{!disableAll}" content="{!content}" />
+	</div>
+		
+		
+	<div>
+		<h1>Menu Settings</h1>
+		<form>
+	
+			<table>
+				<tr>
+					<td style="font-size: 12px; font-family: arial;">Link Color</td>
+					<td>
+						<apex:outputText escape="false" rendered="{!disableAll}">
+							<input type="text" name="LinkColor" id="LinkColor" value="{!LinkColor}" size="6" onchange="$('#LinkColorBox').css('background-color','#' + $('#LinkColor').val());" disabled="disabled" />
+						</apex:outputText>
+						<apex:outputText escape="false" rendered="{!!disableAll}">
+							<input type="text" name="LinkColor" id="LinkColor" value="{!LinkColor}" size="6" onchange="$('#LinkColorBox').css('background-color','#' + $('#LinkColor').val());" />
+						</apex:outputText>
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 12px; font-family: arial;">Link Hover Color</td>
+					<td>
+						<apex:outputText escape="false" rendered="{!disableAll}">
+							<input type="text" name="LinkHoverColor" id="LinkHoverColor" value="{!LinkHoverColor}" size="6" onchange="$('#LinkHoverColorBox').css('background-color','#' + $('#LinkHoverColor').val());" disabled="disabled" />
+						</apex:outputText>
+						<apex:outputText escape="false" rendered="{!!disableAll}">
+							<input type="text" name="LinkHoverColor" id="LinkHoverColor" value="{!LinkHoverColor}" size="6" onchange="$('#LinkHoverColorBox').css('background-color','#' + $('#LinkHoverColor').val());" />
+						</apex:outputText>
+					</td>			
+				</tr>
+				<tr>
+					<td>Link Font Size</td>
+					<td>
+						<apex:outputText escape="false" rendered="{!disableAll}">
+							<input type="text" name="LinkFontSize" id="LinkFontSize" value="{!LinkFontSize}" disabled="disabled" />
+						</apex:outputText>
+						<apex:outputText escape="false" rendered="{!!disableAll}">
+							<input type="text" name="LinkFontSize" id="LinkFontSize" value="{!LinkFontSize}" />
+						</apex:outputText>					
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 12px; font-family: arial;">Divider Character</td>
+					<td>
+						<apex:outputText escape="false" rendered="{!disableAll}">
+							<input type="text" name="Divider" id="Divider" value="{!Divider}" size="6" disabled="disabled" />
+						</apex:outputText>
+						<apex:outputText escape="false" rendered="{!!disableAll}">
+							<input type="text" name="Divider" id="Divider" value="{!Divider}" size="6" />
+						</apex:outputText>
+					</td>
+					<td></td>					
+				</tr>
+			</table>
+					
+		</form>
+
+	</div>
+</apex:page>

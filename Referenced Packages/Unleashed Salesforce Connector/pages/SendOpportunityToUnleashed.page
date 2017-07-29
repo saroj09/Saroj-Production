@@ -1,0 +1,251 @@
+<apex:page standardController="Opportunity" extensions="unleashed.SendOpportunityToUnleashedController" showHeader="true" sidebar="true" docType="html-5.0">
+<!--
+<apex:includeScript value="{!$Resource.jquery}"/>
+    <style type="text/css">
+        .wider { width: 300px; }
+    </style>
+    <script type="text/javascript">
+        function guidRefresh() {
+            jQuery(".wider")[0].value = {!UnleashedUtils.newGuid};
+        }
+    </script>
+-->
+<style>
+    .odd {
+        background-color: #FAFAFA;
+    }
+    .even {
+        background-color: #FFF;
+    }
+
+    .ct{
+        text-align:center;
+    }
+    .text-right {
+        text-align: right;
+    }
+    .red {
+        color: red;
+    }
+    .disable {
+        pointer-events:none;
+    }   
+</style>
+
+
+
+<apex:pageMessages />
+
+<apex:sectionHeader subtitle="{!OpportunityObject.name}" title="Review and revise the Unleashed Sales Order to be created from this Opportunity">
+</apex:sectionHeader>
+    <apex:form >
+        <!--<apex:actionFunction name="RefreshStocks" action="{!getLineItemsAndStocks}" rerender="lineItemsArea" >
+        </apex:actionFunction>-->
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Send To Unleashed" action="{!sendOpportunity}" disabled="{!isError}"/>
+                <apex:commandButton value="Return To Opportunity" action="{!cancel}"/>
+                <!-- <apex:commandButton value="Generate New Guid" action="{!newGuidForOpp}"/> -->
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="2">
+            <!--
+                <apex:pageBlockSectionItem id="this">
+                    <apex:outputLabel value="Guid"/>
+                    <apex:inputField styleClass="wider" value="{!opportunityObject.Guid__c}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem/>
+                -->
+
+<!--
+                <apex:pageBlockSectionItem id="CustomerSelectionArea">
+                    <apex:outputLabel value="Customer"/>
+                    <apex:input type="text" value="{!selectedCustomer}"/>
+                    -->
+                <!--
+                <apex:selectList value="{!selectedCustomer}" size="1">
+                    <apex:selectOptions value="{!unleashedCustomerOptions}"/>
+                </apex:selectList> -->
+
+<!-- not wanted?
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Payment Due Date"/>
+                    <apex:inputField value="{!opportunityObject.Payment_Due_Date__c}"/>
+                </apex:pageBlockSectionItem>
+                -->
+
+                <apex:pageBlockSectionItem id="OrderStatusSelectionArea">
+                    <apex:outputLabel value="Order Status"/>
+                    <apex:selectList value="{!opportunityObject.unleashed__Unleashed_Order_Status__c}" size="1" onchange="RefreshStocks" disabled="{!isError}">
+                        <apex:selectOptions value="{!unleashedOrderStatusOptions}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="DeliveryName">
+                    <apex:outputLabel value="Delivery Name"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__Delivery_Name__c}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="WarehouseSelectionArea" rendered="{!IF(isSync,false,true)}">
+                    <apex:outputLabel value="Warehouse"/>
+                    <apex:selectList value="{!selectedWarehouseId}" size="1" disabled="{!isError}">
+                        <apex:selectOptions value="{!warehouseSelectOptions}"/>
+                        <!-- <apex:actionSupport action="{!refreshLineItemsAndStocks}" reRender="lineItemsArea" event="onchange"/> -->
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="WarehouseSelectionOutput" rendered="{!IF(isSync,true,false)}">
+                    <apex:outputLabel value="Warehouse"/>
+                    <apex:outputLabel value="{!selectedWarehouseName}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="DeliveryStreetAddress">
+                    <apex:outputLabel value="Delivery Street Address"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__Delivery_Street_Address__c}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+
+
+                <apex:pageBlockSectionItem id="TaxSelectionArea">
+                    <apex:outputLabel value="Tax"/>
+                    <apex:selectList value="{!selectedTax}" size="1" disabled="{!isError}">
+                        <apex:selectOptions value="{!unleashedTaxOptions}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="DeliverySuburb">
+                    <apex:outputLabel value="Delivery Suburb"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__Delivery_Suburb__c}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="DeliveryMethod">
+                    <apex:outputLabel value="Delivery Method"/>
+                    <apex:selectList value="{!opportunityObject.unleashed__Delivery_Method__c}" size="1" disabled="{!isError}">
+                        <apex:selectOptions value="{!deliveryMethodOptions}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="DeliveryCity">
+                    <apex:outputLabel value="Delivery City"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__Delivery_City__c}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="CustomerName">
+                    <apex:outputLabel value="Customer Name"/>
+                    <apex:outputLabel value="{!Customer.Name}"/>
+                </apex:pageBlockSectionItem>
+<!--
+                <apex:pageBlockSectionItem id="DeliveryMethod">
+                    <apex:outputLabel value="Delivery Method"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__Delivery_Method__c}"/>
+                </apex:pageBlockSectionItem> -->
+
+                <apex:pageBlockSectionItem id="DeliveryPostCode">
+                    <apex:outputLabel value="Delivery Postal Code"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__Delivery_Post_Code__c}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+<!--
+                <apex:pageBlockSectionItem id="CustomerGuid">
+                    <apex:outputLabel value="Customer Guid"/>
+                    <apex:outputLabel value="{!Customer.Guid__c}"/>
+                </apex:pageBlockSectionItem>
+                -->
+                <apex:pageBlockSectionItem id="CustomerCodeOutput" rendered="{!hasAccNum}">
+                    <apex:outputLabel value="Customer Code"/>
+                    <apex:outputLabel value="{!Customer.accountNumber}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="CustomerCodeInput" rendered="{!noAccNum}">
+                    <apex:outputLabel value="Customer Code"/>
+                    <apex:inputField value="{!Customer.accountNumber}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="DeliveryRegion">
+                    <apex:outputLabel value="Delivery Region"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__Delivery_Region__c}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="RequiredDate">
+                    <apex:outputLabel value="Required Date"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__Required_Date__c}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="DeliveryCountry">
+                    <apex:outputLabel value="Delivery Country"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__Delivery_Country__c}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="SalespersonList" rendered="{!IF(isSync,false,true)}">
+                    <apex:outputLabel value="Sales Person"/>
+                    <apex:selectList value="{!opportunityObject.unleashed__Salesperson__c}" size="1" disabled="{!isError}">
+                        <apex:selectOptions value="{!unleashedSalespersons}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="SalespersonOutput" rendered="{!IF(isSync,true,false)}">
+                    <apex:outputLabel value="Sales Person"/>
+                    <apex:outputLabel value="{!selectedSalespersons}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="Salesgroup">
+                    <apex:outputLabel value="Sales Group"/>
+                    <apex:selectList value="{!opportunityObject.unleashed__Sales_Order_Group__c}" size="1" disabled="{!isError}">
+                        <apex:selectOptions value="{!unleashedSalesGroups}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="CustomerReference">
+                    <apex:outputLabel value="Customer Reference"/>
+                    <apex:inputField value="{!opportunityObject.unleashed__CustomerRef__c}" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem id="Description">
+                    <apex:outputLabel value="Comments"/>
+                    <apex:inputTextArea value="{!opportunityObject.Description}" rows="3" cols="100" styleClass="{!IF(isError,'disable','')}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+
+                <apex:pageBlockSection rendered="{!hasLineItems}" title="Line Items" columns="1" id="lineItemsArea" >
+                    <apex:pageBlockTable value="{!LineItemsAndStocksList}" var="item" rowClasses="even,odd">
+                        <apex:column value="{!item.lineItem.PriceBookEntry.Name}" />
+                        <apex:column value="{!item.lineItem.Description}"/>
+                        <apex:column value="{!item.lineItem.Quantity}" styleClass="text-right" headerClass="text-right"/>
+                        <apex:column value="{!item.lineItem.UnitPrice}" styleClass="text-right" headerClass="text-right"/> 
+                        <apex:column value="{!item.lineItem.SubTotal}" styleClass="text-right" headerClass="text-right"/> 
+                        <!-- <apex:column value="{!item.Discount}"/> -->
+                        <apex:column value="{!item.lineItem.TotalPrice}" styleClass="text-right" headerClass="text-right"/> 
+                        <apex:column headerValue="Quantity Available" styleClass="text-right {!IF((NOT(ISNULL(item.lineItem.Quantity)) && NOT(ISNULL(item.integerQuantityAvailable))) && (item.lineItem.Quantity > item.integerQuantityAvailable), 'red', '')}" headerClass="text-right">
+
+                            <apex:outputPanel rendered="{!ISNULL(item.stock.unleashed__Warehouse__c)}" style="color:#c0c0c0;">
+                                <apex:outputText value="-"/>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!NOT(ISNULL(item.stock.unleashed__Warehouse__c))}" styleClass="{!IF(item.stock.unleashed__Available_Qty__c < item.lineItem.Quantity, 'red', '')}">
+                                <apex:outputText value="{0,number,#,###.##}">
+                                    <apex:param value="{!item.stock.unleashed__Available_Qty__c}"/>
+                                </apex:outputText>
+                            </apex:outputPanel>
+                            
+                        </apex:column> 
+                        <!--
+                        <apex:column value="{!item.lineItem.autoSort__c}" headerClass="ct"/> 
+                        -->
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+
+            </apex:pageBlockSection>
+            <apex:pageBlockSection >
+                <apex:pageBlockSection >
+
+                </apex:pageBlockSection>
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+    </apex:form>
+    <input id="hiddenElementId" type="hidden" />
+<script type="text/javascript">
+window.onload = setFocus
+function setFocus()
+{
+         document.getElementById("hiddenElementId").focus();
+}
+</script>
+</apex:page>

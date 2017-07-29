@@ -1,0 +1,9 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+	 	<div id="ocmsPreviewMsgBox" style="position:absolute; max-width: 50%">
+        	<div class="ui-state-warn ui-corner-all" style="position:relative;min-height:30px;background-color:#FFFFE0;color:#000;border:2px solid #DAA520;">
+				<div style="padding:7px 40px 5px">
+					<div id="ocmsPreviewMsgBoxMsg" style="overflow-y: hidden;overflow-x: auto;padding-bottom: 10px; font-size: 14px;">This content template doesn't have any content or template properties to configure</div>
+				</div>
+			</div>
+      	</div>
+</apex:page>

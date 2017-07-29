@@ -1,0 +1,9 @@
+<apex:page standardController="Customer__c" extensions="mdf">
+    {!showmsg}<br />
+    <apex:form >
+      <apex:inputField id="Customer_Name__c" value="{!cs.Customer_Name__c}"/><br />
+      <apex:inputField id="Address__c" value="{!cs.Address__c}"/><br />
+      <apex:inputField id="Phone__c" value="{!cs.Phone__c}"/><br />
+      <apex:commandButton value="Insert" action="{!save}"/>
+    </apex:form>
+</apex:page>

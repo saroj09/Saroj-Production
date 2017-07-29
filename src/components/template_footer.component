@@ -1,0 +1,59 @@
+<apex:component layout="none">
+
+
+	<apex:outputText >
+	
+	
+	
+	
+	
+	<div id="footer-zone" style="background:#e5e5e5;">
+			<div id="footer-zone-inner" class="container">
+				<div class="row">
+					<div class="col-xs-12">
+
+	<div class="pull-right">
+  <span class="margin-r1 hidden-xs">Connect With Us</span>
+  <a href="/" target="_blank"><span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x" style="
+    color: #a7a7a7;
+"></i>
+  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+</span>
+</a>
+<a href="/" target="_blank">
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x" style="
+    color: #a7a7a7;
+"></i>
+  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+</span>
+</a>
+<a href="/" target="_blank">
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x" style="
+    color: #a7a7a7;
+"></i>
+  <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+</span>
+</a>
+  
+   
+  <a href="/" target="_blank">
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x" style="
+    color: #a7a7a7;
+"></i>
+  <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+</span>
+</a>
+  
+						</div>
+							</div>
+					</div>
+				</div>
+			</div>
+	</apex:outputText>
+	
+	
+</apex:component>

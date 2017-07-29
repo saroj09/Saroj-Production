@@ -1,0 +1,68 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.Flash" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+ 	<script type="text/javascript" language="javascript">
+
+		$(document).ready(function(){
+			$('#flash-input').image_selector_input({
+				type: 'Flash',
+				disabled: {!disableAll},
+				sname: '{!JSENCODE(content.Site_Name__c)}',
+				ajaxLoader: '{!$Resource.ajaxLoader}',
+				width: '{!Width}',
+				height: '{!Height}',
+				url: '{!Flash}'
+			});
+			
+			ce.content_editor('registerSaveContent', function(){
+				var attributes = new Array();
+				attributes.push({"name":"Flash", "value":$('#flash-input').image_selector_input('getSelected'), "type":"Id"});
+				attributes.push({"name":"FlashWidth", "value":$('#Width').val(), "type":"Integer"});
+				attributes.push({"name":"FlashHeight", "value":$('#Height').val(), "type":"Integer"});
+				return attributes; 
+			});
+			
+		});
+
+	</script>
+
+    <apex:outputText escape="false">
+        <form>
+
+            <table class="ocms-editor">
+            	<tr>
+            		<td colspan="2">
+            			<div id="flash-input"></div>
+            		</td>
+            	</tr>
+            	<tr>
+           			<td>Width</td>
+           			<td>
+           				<apex:outputText escape="false" rendered="{!!disableAll}" >
+           					<input id="Width" name="Width" value="{!Width}" size="3" disabled="disabled" />
+           				</apex:outputText>
+           				<apex:outputText escape="false" rendered="{!!disableAll}" >
+           					<input id="Width" name="Width" value="{!Width}" size="3" />
+           				</apex:outputText>
+           				px
+           			</td>
+            	</tr>
+				<tr>
+            		<td>Height</td>
+            		<td>
+            			<apex:outputText escape="false" rendered="{!disableAll}" >
+            				<input id="Height" name="Height" value="{!Height}" size="3" disabled="disabled" />
+            			</apex:outputText>
+            			<apex:outputText escape="false" rendered="{!!disableAll}" >
+            				<input id="Height" name="Height" value="{!Height}" size="3" />
+            			</apex:outputText>
+            			px
+            		</td>
+            	</tr>
+            </table>
+
+			<br />
+
+
+
+      	</form>
+   	</apex:outputText>
+</apex:page>

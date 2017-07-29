@@ -1,0 +1,124 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.ListableWithImage" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+	<head>
+        <apex:includeScript value="{!URLFOR($Resource.cms__OrchestraCMSUI, '/selector/DateFormatSelector.js')}" />
+		<style type="text/css">
+
+			.date-format-selector { list-style-type: none; margin: 0; padding: 0; }
+			.date-format-selector li {position:relative; margin: 3px 3px 3px 0; padding: 18px 1px 1px 1px; float: left; height: 32px; font-size: 4em; text-align: center; border: 1px solid #cccccc; }
+			.drag-handle {position: absolute; top:0; left:0; width: 15px; height: 15px;}
+		</style>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#date_formatter').date_format_selector({
+					target: '#DateFormat',
+					value: '{!JSENCODE(DateFormat)}',
+					disabled: {!disableAll}
+				});
+			
+				ce.content_editor('registerSaveFunction', function(){
+				
+					var attributes = new Array();
+
+					attributes.push({"name":"ListTitle", "value":$('#ListTitle').val(), "type":"Text"});
+					attributes.push({"name":"ListSummary", "value":$('#ListSummary').val(), "type":"Text"});
+					attributes.push({"name":"ListImage", "value":$('#ListImageInput').val(), "type":"Text"});
+					attributes.push({"name":"ShowDate", "value":$('#ShowDate:checked').val() == 'true' ? 'true' : 'false', "type":"Boolean"});
+					attributes.push({"name":"TargetLink", "value":$('#TargetLink').val(), "type":"Text"});
+					attributes.push({"name":"DateFormat", "value":$('#DateFormat').val(), "type":"Text"});
+					attributes.push({"name":"ListableMoreLink", "value":$('#MoreLink').val(), "type":"Text"});
+					
+					return attributes; 
+				
+				});
+			
+			
+			});
+		</script>
+
+	</head>
+
+
+    <apex:outputPanel layout="block" style="padding: 5px;">
+
+       <form>
+            <table>
+              <tr>
+                <td>List Title</td>
+                <td>
+                	<apex:outputText escape="false" rendered="{!disableAll}" >
+                    	<input type="text" value="{!ListTitle}" name="ListTitle" id="ListTitle" size="37" disabled="disabled" />
+                	</apex:outputText>
+                	<apex:outputText escape="false" rendered="{!!disableAll}" >
+                    	<input type="text" value="{!ListTitle}" name="ListTitle" id="ListTitle" size="37" />
+                	</apex:outputText>
+                </td>
+              </tr>
+              <tr>
+                <td>List Summary</td>
+                <td>
+                 	<apex:outputText escape="false" rendered="{!disableAll}" >
+                		<textarea id="ListSummary" name="ListSummary" disabled="disabled"><apex:outputText value="{!ListSummary}" /></textarea>
+                	</apex:outputText>
+                	<apex:outputText escape="false" rendered="{!!disableAll}" >
+                		<textarea id="ListSummary" name="ListSummary"><apex:outputText value="{!ListSummary}" /></textarea>
+                	</apex:outputText>
+                </td>
+              </tr>
+              <tr>
+                <td>List Image</td>
+                <td>
+                    <input type="hidden" id="ListImageInput" name="ListImageInput" value="{!ListImage}" />
+                    <c:ImageSelector sname="{!content.cms__Site_Name__c}" cPassThroughId="ListImageInput" cImage="{!ListImage}" type="Image" disabled="{!disableAll}" />
+                </td>
+              </tr>
+			  <tr>
+			    <td>Target Link</td>
+				<td>
+				  <input type="hidden" name="TargetLink" id="TargetLink" value="{!TargetLink}" />
+			      <c:PageSelector cPassThroughId="TargetLink" value="{!TargetLink}"  dialogId="TargetLinkDlg" disabled="{!disableAll}" sname="{!content.cms__Site_Name__c}" token="{!token}" />
+				</td>
+			  </tr>
+			  <tr>
+			  	<td>Show Published Date</td>
+			  	<td>
+			  		<apex:outputText escape="false" rendered="{!ShowDate}">
+			  			<apex:outputText escape="false" rendered="{!disableAll}">
+			  				<input type="checkbox" name="ShowDate" id="ShowDate" value="true" checked="checked" disabled="disabled"/>
+			  			</apex:outputText>
+			  			<apex:outputText escape="false" rendered="{!!disableAll}">
+			  				<input type="checkbox" name="ShowDate" id="ShowDate" value="true" checked="checked"/>
+			  			</apex:outputText>
+			  		</apex:outputText>
+			  		<apex:outputText escape="false" rendered="{!!ShowDate}">
+			  			<apex:outputText escape="false" rendered="{!disableAll}">
+			  				<input type="checkbox" name="ShowDate" id="ShowDate" value="true" disabled="disabled" />
+						</apex:outputText>
+						<apex:outputText escape="false" rendered="{!!disableAll}">
+							<input type="checkbox" name="ShowDate" id="ShowDate" value="true" />
+						</apex:outputText>
+			  		</apex:outputText>
+			  	</td>
+			  </tr>
+			  <tr>
+			  	<td>Date Format</td>
+			  	<td>
+			  		<input type="hidden" name="DateFormat" id="DateFormat" value="{!DateFormat}" />
+			  		<div id="date_formatter"></div>
+			  	</td>
+			  </tr>
+        	  <tr>
+        	    <td>More Link</td>
+                <td>
+                  <apex:outputText escape="false" rendered="{!disableAll}">
+                  	<input type="text" name="MoreLink" id="MoreLink" value="{!ListableMoreLink}" disabled="disabled" />
+                  </apex:outputText>
+                  <apex:outputText escape="false" rendered="{!!disableAll}">
+                  	<input type="text" name="MoreLink" id="MoreLink" value="{!ListableMoreLink}" />
+                  </apex:outputText>
+                </td>
+              </tr>
+           </table>
+        </form>
+    </apex:outputPanel>
+</apex:page>

@@ -1,0 +1,38 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.PortalRegisterController" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+	<apex:outputPanel layout="block" style="padding: 5px;">
+	
+	 	<script type="text/javascript" language="javascript">
+			$(document).ready(function(){
+				ce.content_editor('registerSaveFunction', function(){
+					var attributes = new Array();
+					attributes.push({"name":"DefaultAccount", "value":$('#DefaultAccount').val(), "type":"Text"});
+					attributes.push({"name":"DefaultStartPage", "value":$('#ConfirmationPage').val(), "type":"Text"});
+					return attributes;
+				});
+			});
+
+		</script>
+	
+	<form>
+	    <table>
+	        <tr>
+	            <td>New User Default Account</td>
+	            <td>
+					<input type="hidden" id="DefaultAccount" name="DefaultAccount" value="{!DefaultAccount}" />
+	
+					<c:UniversalLookup id="ul1" showStandardLabel="false" cPassThroughId="DefaultAccount" cPassThroughObjectType="String" lookupObjectType="Account" selectedObjectName="{!DefaultAccountName}" disabled="{!disableAll}" />
+	
+	            </td>
+	        </tr>
+	        <tr>
+	            <td>Confirmation Page</td>
+	            <td>
+	                <input type="hidden" id="ConfirmationPage" name="ConfirmationPage" value="{!ConfirmationPage}" />
+	
+	                <c:PageSelector cPassThroughId="#ConfirmationPage" value="{!ConfirmationPage}"  dialogId="ConfirmationPageDlg" disabled="{!disableAll}" sname="{!content.cms__Site_Name__c}" token="{!token}"  />
+	            </td>
+	        </tr>
+	    </table>
+	</form>
+	</apex:outputPanel>
+</apex:page>

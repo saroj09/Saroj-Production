@@ -1,0 +1,14 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.PlainText" showHeader="false" sidebar="false" cache="false" standardStylesheets="false">
+ 	<script type="text/javascript" language="javascript">
+		$(document).ready(function(){
+			ce.content_editor('registerSaveFunction', function(){
+				var attributes = new Array();
+				attributes.push({"name":"PlainText", "value":$('#PlainText').val(), "type":"Text"});
+				return attributes;
+			});
+ 		}); 
+	</script>
+  	<form>
+		<textarea name="PlainText" id="PlainText" cols="100" rows="25"><apex:outputText value="{!PlainText}" /></textarea>
+	</form>
+</apex:page>

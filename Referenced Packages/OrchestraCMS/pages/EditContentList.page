@@ -1,0 +1,31 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.ContentList" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+ 	<script type="text/javascript" language="javascript">
+ 	
+		$(document).ready(function(){
+			$('#DynamicTargetPageLink').ocmsInput({instructionalText:'Link to which any content should point to.', includeBreak: false});
+			
+			ce.content_editor('registerSaveFunction', function(){
+				var attributes = new Array();
+				attributes.push({"name":"DynamicTargetPageLink", "value":$('#DynamicTargetPageLink').val(), "type":"Text"});
+				return attributes; 			
+			});
+			
+		});
+	</script>
+
+    <apex:outputPanel >
+        <form>
+            <table class="ocms-editor">
+  				<tr>
+					<td valign="top" style="line-height: 21px;">Target Page</td>
+					<td valign="top">
+						<c:PageSelector cPassThroughId="DynamicTargetPageLink" value="{!DynamicTargetPageLink}"
+                                                    dialogId="DynamicTargetPageLinkDlg" disabled="{!disableAll}"
+                                                    sname="{!content.cms__Site_Name__c}" token="{!token}"/>
+						<input type="hidden" id="DynamicTargetPageLink" name="DynamicTargetPageLink" value="{!DynamicTargetPageLink}" />
+					</td>
+				</tr>
+			</table>
+        </form>
+    </apex:outputPanel>
+</apex:page>

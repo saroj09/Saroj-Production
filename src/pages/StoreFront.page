@@ -1,0 +1,22 @@
+<apex:page standardStylesheets="false" showHeader="false" sidebar="false" controller="StoreFront">
+  <!-- Begin Default Content REMOVE THIS -->
+  <apex:stylesheet value="{!URLFOR($Resource.styles, 'styles.css')}"/>
+  <h1>Store Front</h1>
+ <apex:form >
+     <apex:dataTable value="{!products}" var="pitem" rowClasses="odd,even">
+         <apex:column headerValue="Products">
+             <apex:outputText value="{!pitem.merchandise.name}"></apex:outputText>
+         </apex:column>
+         <apex:column headerValue="Price">
+             <apex:outputText value="{!pitem.merchandise.Price__c}"></apex:outputText>
+         </apex:column>
+         <apex:column headerValue="#Items">
+             <apex:inputText value="{!pitem.count}"></apex:inputText>
+         </apex:column>
+     </apex:dataTable>
+     <br />
+     <apex:commandButton action="{!shop}" reRender="msg" value="Buy"/>
+ </apex:form>
+ <apex:outputpanel id="msg">{!message}</apex:outputpanel>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

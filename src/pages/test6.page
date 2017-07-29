@@ -1,0 +1,5 @@
+<apex:page standardController="Resource__c" recordSetVar="s">
+ <apex:dataList value="{!s}" var="r">
+ <b>{!r.Name}</b>
+ </apex:dataList>
+</apex:page>

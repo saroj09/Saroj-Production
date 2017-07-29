@@ -1,0 +1,71 @@
+<apex:page controller="cms.CreateContentController" extensions="cms.PortalLoginController" showHeader="false" sidebar="false" cache="false" title="Orchestra CMS" standardStylesheets="false">
+    <apex:outputPanel layout="block" style="padding: 5px;">
+
+        <script type="text/javascript" language="javascript">
+			$(document).ready(function(){
+				ce.content_editor('registerSaveFunction', function(){
+
+	                var attributes = new Array();
+	                attributes.push({"name":"DefaultStartPage", "value":$('#DefaultStartPage').val(), "type":"Text"});
+	                attributes.push({"name":"ForgotPasswordPage", "value":$('#ForgotPasswordPage').val(), "type":"Text"});
+	                attributes.push({"name":"SelfRegistrationPage", "value":$('#SelfRegistrationPage').val(), "type":"Text"});
+					return attributes;
+			
+				});
+			});  
+        </script>
+
+        <div class="ocms-property-viewer">
+            <div class="ocms-property-viewer-header">Portal Login</div>
+            <div class="ocms-property-viewer-body ocms-property-form" >
+                <div class="ocms-property-form-panel-col" >
+                    <fieldset class="ocms-fieldset">
+                        <table cellspacing="1" class="ocms-property-table">
+                            <tbody>
+                            <tr class="ocms-property-marker ocms-data-info">
+                                <td class="ocms-param-key  ocms-param-key-top"><span class="">Default Start Page</span></td>
+                                <td class="ocms-param-value">
+                                    <input type="hidden" name="DefaultStartPage" id="DefaultStartPage" value="{!DefaultStartPage}"/>
+
+                                    <c:PageSelector cPassThroughId="DefaultStartPage" value="{!DefaultStartPage}"
+                                                    dialogId="DefaultStartPageDlg" disabled="{!disableAll}"
+                                                    sname="{!content.cms__Site_Name__c}" token="{!token}"/>
+                                    <div class="ocms-instructional-text">Page that will be directed to after a successful login.</div>
+                                </td>
+                                <span class=""><img class="ocms-input-error" src="{!URLFOR($Resource.jqueryui, '/css/images/cleardot.gif')}"/></span>
+                            </tr>
+                            <tr class="ocms-property-marker ocms-data-info">
+                                <td class="ocms-param-key  ocms-param-key-top"><span class="">Forgot Password Page</span></td>
+                                <td class="ocms-param-value">
+                                    <input type="hidden" name="ForgotPasswordPage" id="ForgotPasswordPage"
+                                           value="{!ForgotPasswordPage}"/>
+                                    <c:PageSelector cPassThroughId="ForgotPasswordPage" value="{!ForgotPasswordPage}"
+                                                    dialogId="ForgotPasswordPageDlg" disabled="{!disableAll}"
+                                                    sname="{!content.cms__Site_Name__c}" token="{!token}"/>
+                                    <div class="ocms-instructional-text">Page that the user goes when selecting the forgot password link.</div>
+                                </td>
+                                <span class=""><img class="ocms-input-error" src="{!URLFOR($Resource.jqueryui, '/css/images/cleardot.gif')}"/></span>
+                            </tr>
+                            <tr class="ocms-property-marker ocms-data-info">
+                                <td class="ocms-param-key  ocms-param-key-top"><span class="">Self Registration Page</span></td>
+                                <td class="ocms-param-value">
+                                    <input type="hidden" name="SelfRegistrationPage" id="SelfRegistrationPage"
+                                           value="{!SelfRegistrationPage}"/>
+                                    <c:PageSelector cPassThroughId="SelfRegistrationPage" value="{!SelfRegistrationPage}"
+                                                    dialogId="SelfRegistrationPageDlg" disabled="{!disableAll}"
+                                                    sname="{!content.cms__Site_Name__c}" token="{!token}"/>
+                                    <div class="ocms-instructional-text">Page that the user goes when selecting the self registration link.</div>
+                                </td>
+                                <span class=""><img class="ocms-input-error" src="{!URLFOR($Resource.jqueryui, '/css/images/cleardot.gif')}"/></span>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <legend>Properties</legend>
+                    </fieldset>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+        </div>
+
+    </apex:outputPanel>
+</apex:page>
